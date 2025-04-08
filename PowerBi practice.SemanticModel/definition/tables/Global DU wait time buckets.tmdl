@@ -1,0 +1,49 @@
+table 'Global DU wait time buckets'
+	lineageTag: 26e08391-ab0e-4ca0-8d91-0fa814612eaa
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 44f2d6c4-af2c-4f89-a6b9-e05c1543a830
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Wait Hour Buckets'
+		dataType: string
+		lineageTag: e14e1e22-ec72-4239-8460-26a49f7899f1
+		summarizeBy: none
+		sourceColumn: Wait Hour Buckets
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Case Count'
+		dataType: string
+		lineageTag: 0ab0f52d-b16d-4d2e-94bf-0add6d6180ab
+		summarizeBy: none
+		sourceColumn: Case Count
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Global DU wait time buckets' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\user\Documents\Pay Ops BI Lead Homework_Answer(AutoRecovered).xlsx"), null, true),
+				    Table3_Table = Source{[Item="Table3",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Table3_Table,{{"Wait Hour Buckets", type any}, {"1. Within 1h", type any}, {"2. Within 2h", type any}, {"3. Within 4h", type any}, {"4. Within 8h", type any}, {"5. Within 12h", type any}, {"6. Within 24h", type any}, {"7. Within 48h", type any}, {"8. Within 72h", type any}}),
+				    #"Removed Top Rows" = Table.Skip(#"Changed Type",1),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Removed Top Rows", {"Wait Hour Buckets"}, "Attribute", "Value"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Unpivoted Other Columns",{{"Wait Hour Buckets", "Date"}, {"Attribute", "Wait Hour Buckets"}, {"Value", "Case Count"}}),
+				    #"Extracted Text After Delimiter" = Table.TransformColumns(#"Renamed Columns", {{"Wait Hour Buckets", each Text.AfterDelimiter(_, ". "), type text}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Extracted Text After Delimiter",{{"Date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

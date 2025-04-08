@@ -1,0 +1,86 @@
+table DimDate
+	lineageTag: 71563405-3332-4613-a864-18bd48355532
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8abc9b0e-0478-4701-8a46-1166ba07cbe5
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 6cac02b3-bd06-4c12-aaa2-158091af2cdc
+			defaultHierarchy: LocalDateTable_ddccd429-e11c-494f-af58-5b6adb325913.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6529d4f0-3e98-4025-9e17-508c475f223c
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 3c113357-e0c3-45ae-88ba-24b58dcfabe6
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c13b190-a8cf-409a-91c8-99492224f7db
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b534f4c-392a-4ad5-aafc-809910fb07f3
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: 556e87cf-b204-4852-ac92-ed7679c508af
+		summarizeBy: none
+		sourceColumn: Day Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = m
+		mode: import
+		queryGroup: Date
+		source =
+				let
+				    Source = #"Global linking wait time bucket",
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Inserted Year" = Table.AddColumn(#"Removed Duplicates", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Year", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Month Name", "Month", each Date.Month([Date]), Int64.Type),
+				    #"Inserted Quarter" = Table.AddColumn(#"Inserted Month", "Quarter", each Date.QuarterOfYear([Date]), Int64.Type),
+				    #"Inserted Day of Week" = Table.AddColumn(#"Inserted Quarter", "Day of Week", each Date.DayOfWeek([Date]), Int64.Type),
+				    #"Removed Columns" = Table.RemoveColumns(#"Inserted Day of Week",{"Day of Week"}),
+				    #"Inserted Day of Week1" = Table.AddColumn(#"Removed Columns", "Day of Week", each Date.DayOfWeek([Date]), Int64.Type),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Inserted Day of Week1",{"Day of Week"}),
+				    #"Inserted Day Name" = Table.AddColumn(#"Removed Columns1", "Day Name", each Date.DayOfWeekName([Date]), type text)
+				in
+				    #"Inserted Day Name"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

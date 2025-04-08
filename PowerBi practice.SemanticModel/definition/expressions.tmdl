@@ -1,0 +1,72 @@
+expression 'Global linking escalations and_Date' =
+		let
+		    Source = #"Global linking escalations and",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+		in
+		    #"Removed Duplicates"
+	lineageTag: 9b9c3131-8d53-441b-9b2f-b09ee1f0f3dd
+	queryGroup: Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Global DU wait time buckets_Date' =
+		let
+		    Source = #"Global DU wait time buckets",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+		in
+		    #"Removed Duplicates"
+	lineageTag: 49762b4d-849a-45ee-9ab3-94b979613111
+	queryGroup: Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Global DU escalations and escal_ Date' =
+		let
+		    Source = #"Global DU escalations and escal",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+		in
+		    #"Removed Duplicates"
+	lineageTag: e37a6ab6-f36c-4ccd-b703-3fd9d5471b08
+	queryGroup: Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Regional NM & ACH inputs by tea_ Date' =
+		let
+		    Source = #"Regional NM & ACH inputs by tea",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+		in
+		    #"Removed Duplicates"
+	lineageTag: 6af7bca3-df9e-462e-847e-f6366107396b
+	queryGroup: Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Regional NM & ACH outputs by te_Date' =
+		let
+		    Source = #"Regional NM & ACH outputs by te",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Date"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+		    #"Appended Query" = Table.Combine({#"Removed Duplicates", DimDate, #"Global linking escalations and_Date", #"Global DU wait time buckets_Date", #"Global DU escalations and escal_ Date", #"Regional NM & ACH inputs by tea_ Date"}),
+		    #"Removed Duplicates1" = Table.Distinct(#"Appended Query")
+		in
+		    #"Removed Duplicates1"
+	lineageTag: ddf98277-a9dd-4b0e-9133-275676956224
+	queryGroup: Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

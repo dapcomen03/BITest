@@ -1,0 +1,52 @@
+table 'Global linking wait time bucket'
+	lineageTag: eb9f9147-5ee5-4277-a8c8-bcf6d520c89a
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 89d99e15-0f93-4d08-b62e-77e1248dbc0d
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Wait Hour Bucket'
+		dataType: string
+		lineageTag: d62f10c9-cb5a-4ac7-b782-1892f27bbbd6
+		summarizeBy: none
+		sourceColumn: Wait Hour Bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Case Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d0581bd-15fa-43db-99e8-3f198fd6fa0d
+		summarizeBy: sum
+		sourceColumn: Case Count
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Global linking wait time bucket' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\user\Documents\Pay Ops BI Lead Homework_Answer(AutoRecovered).xlsx"), null, true),
+				    Table1_Table = Source{[Item="Table1",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Table1_Table,{{"Wait Hour Buckets", type any}, {"1. Within 1h", type any}, {"2. Within 2h", type any}, {"3. Within 4h", type any}, {"4. Within 8h", type any}, {"5. Within 12h", type any}, {"6. Within 24h", type any}, {"7. Within 48h", type any}, {"8. Within 72h", type any}, {"9. Over 72h", type any}}),
+				    #"Removed Top Rows" = Table.Skip(#"Changed Type",1),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Removed Top Rows", {"Wait Hour Buckets"}, "Attribute", "Value"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Unpivoted Other Columns",{{"Attribute", type text}}),
+				    #"Extracted Text After Delimiter" = Table.TransformColumns(#"Changed Type1", {{"Attribute", each Text.AfterDelimiter(_, ". "), type text}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Extracted Text After Delimiter",{{"Value", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type2",{{"Wait Hour Buckets", "Date"}, {"Attribute", "Wait Hour Bucket"}, {"Value", "Case Count"}}),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

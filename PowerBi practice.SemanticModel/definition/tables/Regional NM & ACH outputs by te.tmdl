@@ -1,0 +1,49 @@
+table 'Regional NM & ACH outputs by te'
+	lineageTag: 691060fa-c24c-45bf-a5f3-653d4b8f5585
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0b6bc64a-41f7-4bc3-b428-b1d3f2e731ca
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Internal Action Actor Payops Team'
+		dataType: string
+		lineageTag: e021d4dd-250b-4d7d-9117-75b3109749fb
+		summarizeBy: none
+		sourceColumn: Internal Action Actor Payops Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Output Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: ffc7b68f-9315-4e20-9533-f81cd88311ad
+		summarizeBy: sum
+		sourceColumn: Output Count
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Regional NM & ACH outputs by te' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\user\Documents\Pay Ops BI Lead Homework_Answer(AutoRecovered).xlsx"), null, true),
+				    Table6_Table = Source{[Item="Table6",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Table6_Table,{{"Internal Action Actor Payops Team", type any}, {"APAC Expansion ops", type any}, {"APAC Mature ops", type any}, {"BRL ops", type any}, {"CEE ops", type any}, {"Central ops", type any}, {"CNO ops", type any}, {"Emerging ops", type any}, {"EUR ops", type any}, {"Europe & UK (Area)", type any}, {"Europe ops", type any}, {"GBP ops", type any}, {"GC ops", type any}, {"Global Processing Budapest 1", type any}, {"Global Processing Budapest 2", type any}, {"Global Processing Singapore 1", type any}, {"Global Processing Singapore 2", type any}, {"Global Processing Tallinn 1", type any}, {"Global Processing Tallinn 2", type any}, {"Global Processing Tallinn 3", type any}, {"Global Processing US 1", type any}, {"Global Processing US 2", type any}, {"JPYKRW ops", type any}, {"LatAm MEA ops", type any}, {"LatAm ops", type any}, {"NorthAm ops", type any}, {"Ops APAC - Global Processing", type any}, {"Pacific ops", type any}, {"ROSEA ops", type any}, {"SGDMYR ops", type any}, {"South Asia ops", type any}, {"SWIFT ops", type any}, {"Training", type any}}),
+				    #"Removed Top Rows" = Table.Skip(#"Changed Type",1),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Removed Top Rows", {"Internal Action Actor Payops Team"}, "Attribute", "Value"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Unpivoted Other Columns",{{"Value", "Output Count"}, {"Internal Action Actor Payops Team", "Date"}, {"Attribute", "Internal Action Actor Payops Team"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}, {"Output Count", Int64.Type}, {"Internal Action Actor Payops Team", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

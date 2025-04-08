@@ -1,0 +1,113 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 768.66668701171875,
+        "y": 28.666666030883789
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 857,
+            "y": 296
+          },
+          "nodeIndex": "DimDate",
+          "nodeLineageTag": "71563405-3332-4613-a864-18bd48355532",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 36
+          },
+          "nodeIndex": "Global DU escalations and escal",
+          "nodeLineageTag": "1a3e42db-4962-4bb3-8e7f-41ca2e4c23b4",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 36
+          },
+          "nodeIndex": "Global DU wait time buckets",
+          "nodeLineageTag": "26e08391-ab0e-4ca0-8d91-0fa814612eaa",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 36
+          },
+          "nodeIndex": "Global linking escalations and",
+          "nodeLineageTag": "b8d0eee6-f535-4043-bef5-5b53fbf5e853",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1136,
+            "y": 36
+          },
+          "nodeIndex": "Global linking wait time bucket",
+          "nodeLineageTag": "eb9f9147-5ee5-4277-a8c8-bcf6d520c89a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1420,
+            "y": 36
+          },
+          "nodeIndex": "Regional NM & ACH inputs by tea",
+          "nodeLineageTag": "0ae1f696-1737-415d-b4d7-bc6ebeb86491",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1704,
+            "y": 36
+          },
+          "nodeIndex": "Regional NM & ACH outputs by te",
+          "nodeLineageTag": "691060fa-c24c-45bf-a5f3-653d4b8f5585",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 6
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

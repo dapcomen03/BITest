@@ -1,0 +1,30 @@
+relationship 6cac02b3-bd06-4c12-aaa2-158091af2cdc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimDate.Date
+	toColumn: LocalDateTable_ddccd429-e11c-494f-af58-5b6adb325913.Date
+
+relationship b13dbcf0-4368-0ebe-7d88-d843074822b6
+	fromColumn: 'Global linking escalations and'.Date
+	toColumn: DimDate.Date
+
+relationship 3f93e6d9-1e0f-cdf1-99ae-0c6876039792
+	fromColumn: 'Global linking wait time bucket'.Date
+	toColumn: DimDate.Date
+
+relationship 7d9bb0e1-0be6-b1bc-1654-12d5f7e57dbd
+	fromColumn: 'Global DU wait time buckets'.Date
+	toColumn: DimDate.Date
+
+relationship e4eae5c2-48a1-ca1a-cd86-655fa1c95070
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'Global DU escalations and escal'.Date
+	toColumn: DimDate.Date
+
+relationship f174386e-28cc-109e-915f-8a389f5895f1
+	fromColumn: 'Regional NM & ACH outputs by te'.Date
+	toColumn: DimDate.Date
+
+relationship e597585f-9241-c5f5-ee8d-647a8c087966
+	fromColumn: 'Regional NM & ACH inputs by tea'.Date
+	toColumn: DimDate.Date
+

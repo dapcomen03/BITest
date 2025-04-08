@@ -1,0 +1,48 @@
+table 'Global DU escalations and escal'
+	lineageTag: 1a3e42db-4962-4bb3-8e7f-41ca2e4c23b4
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 47d4e2fa-2980-420d-b12b-5bba9657920e
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'No of Escalations'
+		dataType: int64
+		formatString: 0
+		lineageTag: e34157c9-a3ee-4aaa-b885-6650bbc5fd77
+		summarizeBy: sum
+		sourceColumn: No of Escalations
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Escalation Rate'
+		dataType: double
+		lineageTag: 39c0dd4e-f858-4694-8833-5f3217f063e5
+		summarizeBy: sum
+		sourceColumn: Escalation Rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Global DU escalations and escal' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\user\Documents\Pay Ops BI Lead Homework_Answer(AutoRecovered).xlsx"), null, true),
+				    Table4_Table = Source{[Item="Table4",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Table4_Table,{{"Action Created Parameter", type date}, {"No of Escalations", Int64.Type}, {"Escalation Rate", type number}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Action Created Parameter", "Date"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
